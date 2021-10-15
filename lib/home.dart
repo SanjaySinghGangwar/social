@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'Drawer/DrawerScreen.dart';
-import 'Drawer/HomeScreen.dart';
+import 'Drawer/drawer_screen.dart';
+import 'Drawer/home_screen.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);

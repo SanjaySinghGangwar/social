@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-Color primaryGreen = Color(0xff416d6d);
+Color primaryGreen = const Color(0xff59a769);
 List<BoxShadow> shadowList = [
-  BoxShadow(color: Colors.grey, blurRadius: 30, offset: Offset(0, 10))
+  const BoxShadow(color: Colors.grey, blurRadius: 30, offset: Offset(0, 10))
 ];
 
 List<Map> categories = [
@@ -16,16 +16,16 @@ List<Map> categories = [
 
 List<Map> drawerItems=[
   {
-    'icon': FontAwesomeIcons.paw,
-    'title' : 'Adoption'
+    'icon': FontAwesomeIcons.home,
+    'title' : 'Home'
   },
   {
-    'icon': Icons.mail,
-    'title' : 'Donation'
+    'icon': Icons.social_distance,
+    'title' : 'Friends'
   },
   {
-    'icon': FontAwesomeIcons.plus,
-    'title' : 'Add pet'
+    'icon': FontAwesomeIcons.search,
+    'title' : 'Search'
   },
   {
     'icon': Icons.favorite,
