@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-
+import 'Drawer/DrawerScreen.dart';
+import 'Drawer/HomeScreen.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -14,11 +15,8 @@ class _ProfileState extends State<Home> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('HOME'),
-        ),
-        body: const Center(
-          child: Text('HELLO WORLD'),
+        body: Stack(
+          children: [DrawerScreen(), HomeScreen()],
         ),
       ),
     );
