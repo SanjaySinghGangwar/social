@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "411020611726",
+    "project_id": "social-fe8ed",
+    "storage_bucket": "social-fe8ed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:411020611726:android:363067e327c573cf21f9df",
+        "android_client_info": {
+          "package_name": "com.trei.social"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "411020611726-fdagfnnnked11ucu4rr09v0pfs8c86pt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn4cd2zJ-gX8mWONG7NNTTej4Auemm5n0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "411020611726-fdagfnnnked11ucu4rr09v0pfs8c86pt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

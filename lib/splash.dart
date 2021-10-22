@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:social/login.dart';
 
 import 'home.dart';
 
@@ -27,18 +29,29 @@ class _SplashState extends State<Splash> {
     startTime();
     super.initState();
   }
+
   startTime() async {
     var duration = const Duration(seconds: 2);
     return Timer(duration, route);
   }
 
   route() {
-    Navigator.pushReplacement(context, MaterialPageRoute(
-        builder: (context) => const Home()
-    )
-    );
-  }
+    var status = false;
+    FirebaseAuth.instance.authStateChanges().listen((user) {
+      if (user == null) {
+        status = false;
+        print('User is currently signed out!');
+      } else {
+        status = true;
+        print('User is signed in!');
+      }
+    });
 
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => status ? const Home() : const Login()));
+  }
 
   @override
   Widget build(BuildContext context) {
