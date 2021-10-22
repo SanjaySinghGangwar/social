@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social/Utils/mUtils.dart';
 
 import 'configuration.dart';
 
@@ -13,7 +14,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: primaryGreen,
+      color: mUtils.mColor,
       padding: const EdgeInsets.only(top: 80, bottom: 50, left: 20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -23,8 +24,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               const CircleAvatar(
                 backgroundColor: Colors.white,
                 radius: 35,
-                backgroundImage: NetworkImage(
-                    'https://w7.pngwing.com/pngs/340/956/png-transparent-profile-user-icon-computer-icons-user-profile-head-ico-miscellaneous-black-desktop-wallpaper.png'),
+                backgroundImage: AssetImage('assets/images/user.png'),
               ),
               const SizedBox(
                 width: 10,
@@ -90,7 +90,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 const Padding(
                   padding: EdgeInsets.only(right: 25.0),
                   child: Text(
-                    'Settings',
+                    'SETTING',
                     style: TextStyle(
                         fontSize: 20,
                         color: Colors.white,
@@ -116,7 +116,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   width: 10,
                 ),
                 const Text(
-                  'Log out',
+                  'LOGOUT',
                   style: TextStyle(
                       fontSize: 20,
                       color: Colors.white,
