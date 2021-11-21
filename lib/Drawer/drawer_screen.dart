@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:social/Utils/mUtils.dart';
+import 'package:social/login.dart';
 
 import 'configuration.dart';
 
@@ -14,7 +16,13 @@ class _DrawerScreenState extends State<DrawerScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: mUtils.mColor,
+      //color: mUtils.mColor,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/splash_background.png"),
+          fit: BoxFit.cover,
+        ),
+      ),
       padding: const EdgeInsets.only(top: 80, bottom: 50, left: 20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -35,15 +43,17 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   Text(
                     'No Name',
                     style: TextStyle(
+                        fontFamily: 'DefaultFontBold',
                         fontSize: 30,
-                        color: Colors.white,
+                        color: Colors.black,
                         fontWeight: FontWeight.bold),
                   ),
                   Text(
                     '+919412345678',
                     style: TextStyle(
+                        fontFamily: 'DefaultFont',
                         fontSize: 15,
-                        color: Colors.white,
+                        color: Colors.black,
                         fontWeight: FontWeight.bold),
                   )
                 ],
@@ -58,7 +68,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                         children: [
                           Icon(
                             element['icon'],
-                            color: Colors.white,
+                            color: Colors.black,
                             size: 30,
                           ),
                           const SizedBox(
@@ -67,7 +77,8 @@ class _DrawerScreenState extends State<DrawerScreen> {
                           Text(
                             element['title'],
                             style: const TextStyle(
-                                color: Colors.white,
+                                fontFamily: 'DefaultFont',
+                                color: Colors.black,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20),
                           )
@@ -82,7 +93,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               children: [
                 const Icon(
                   Icons.settings,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
                 const SizedBox(
                   width: 10,
@@ -92,8 +103,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   child: Text(
                     'SETTING',
                     style: TextStyle(
+                        fontFamily: 'DefaultFont',
                         fontSize: 20,
-                        color: Colors.white,
+                        color: Colors.black,
                         fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -103,24 +115,42 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 Container(
                   width: 2,
                   height: 20,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
                 const Padding(
                   padding: EdgeInsets.only(left: 25.0),
                   child: Icon(
                     Icons.account_circle_sharp,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                 ),
                 const SizedBox(
                   width: 10,
                 ),
-                const Text(
-                  'LOGOUT',
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    textStyle: const TextStyle(fontSize: 20),
+                  ),
+                  onPressed: () {
+                    FirebaseAuth.instance
+                        .signOut()
+                        .whenComplete(() => {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Login()))
+                            })
+                        .onError((error, stackTrace) =>
+                            {mUtils.mToast(mUtils.errorMessage)});
+                  },
+                  child: const Text(
+                    'LOGOUT',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'DefaultFont',
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
               ],
             ),

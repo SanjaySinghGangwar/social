@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'Utils/mUtils.dart';
+import 'home.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -18,7 +22,7 @@ class _LoginState extends State<Login> {
         body: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/images/login.png"),
+              image: AssetImage("assets/images/splash_background.png"),
               fit: BoxFit.cover,
             ),
           ),
@@ -27,8 +31,8 @@ class _LoginState extends State<Login> {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: const <Widget>[
-                Center(
+              children: <Widget>[
+                const Center(
                   child: Text(
                     "GET STARTED",
                     style: TextStyle(
@@ -37,20 +41,20 @@ class _LoginState extends State<Login> {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 200,
                   width: 150,
                   child: Image(
                     image: AssetImage('assets/images/phone.png'),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                Padding(
+                const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Card(
                     elevation: 10,
@@ -78,7 +82,10 @@ class _LoginState extends State<Login> {
                   child: Card(
                     elevation: 10,
                     child: InkWell(
-                      child: Padding(
+                      onTap: () {
+                        print('Continue');
+                      },
+                      child: const Padding(
                         padding: EdgeInsets.all(20.0),
                         child: Center(
                           child: Text(
@@ -89,16 +96,16 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                Center(
+                const Center(
                   child: Text(
                     "OR",
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Padding(
@@ -107,7 +114,10 @@ class _LoginState extends State<Login> {
                     color: Colors.black,
                     elevation: 10,
                     child: InkWell(
-                      child: Padding(
+                      onTap: () {
+                        tryMyApplication(context);
+                      },
+                      child: const Padding(
                         padding: EdgeInsets.all(20.0),
                         child: Center(
                           child: Text(
@@ -125,5 +135,17 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  void tryMyApplication(BuildContext context) {
+    print('Try my app');
+    FirebaseAuth.instance
+        .signInAnonymously()
+        .whenComplete(() => {
+              mUtils.showMessage(context, "Welcome"),
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => Home()))
+            })
+        .onError((error, stackTrace) => mUtils.mToast('Error Login In'));
   }
 }

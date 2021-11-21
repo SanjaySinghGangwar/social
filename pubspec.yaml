@@ -29,12 +29,20 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_svg: ^0.22.0
+  flutter_svg: ^0.23.0+1
   hidden_drawer_menu: ^3.0.0
   font_awesome_flutter: ^9.1.0
   firebase_core: ^1.8.0
   firebase_auth: ^3.1.4
+  firebase_messaging: ^10.0.9
+  firebase_storage: ^10.0.6
+
+  firebase_analytics: ^8.3.4
+  firebase_dynamic_links: ^2.0.11
+  firebase_database: ^8.0.1
   country_code_picker: ^2.0.2
+  fluttertoast: ^8.0.8
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -63,6 +71,7 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
@@ -71,7 +80,11 @@ flutter:
   fonts:
     - family: DefaultFont
       fonts:
-        - asset: fonts/default_font.ttf
+        - asset: assets/font/default_regular.ttf
+    - family: DefaultFontBold
+      fonts:
+        - asset: assets/font/default_bold.ttf
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
