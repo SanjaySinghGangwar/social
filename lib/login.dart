@@ -1,3 +1,4 @@
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final TextEditingController phoneController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +36,7 @@ class _LoginState extends State<Login> {
                 const Center(
                   child: Text(
                     "GET STARTED",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
+                    style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
                   ),
                 ),
                 const SizedBox(
@@ -54,21 +52,45 @@ class _LoginState extends State<Login> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Card(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10.0),
+                      ),
+                    ),
+                    elevation: 10,
+                    child: CountryCodePicker(
+                      onChanged: print,
+                      // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
+                      initialSelection: 'IN',
+                      favorite: const ['+91', 'IN'],
+                      // countryFilter: const ['IN', 'FR','US'],
+                      showFlagDialog: true,
+                      comparator: (a, b) => b.name!.compareTo(a.name!),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                  child: Card(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10.0),
+                      ),
+                    ),
                     elevation: 10,
                     child: TextField(
+                      controller: phoneController,
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.white, width: 2.0),
+                          borderSide: BorderSide(color: Colors.transparent, width: 2.0),
                         ),
                         disabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.black, width: 2.0),
+                          borderSide: BorderSide(color: Colors.transparent, width: 2.0),
                         ),
                         border: OutlineInputBorder(),
                         hintText: 'ENTER MOBILE NUMBER',
@@ -78,39 +100,44 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Card(
-                    elevation: 10,
-                    child: InkWell(
-                      onTap: () {
-                        print('Continue');
-                      },
-                      child: const Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Center(
-                          child: Text(
-                            "CONTINUE",
-                          ),
+                  padding: const EdgeInsets.only(left: 8.0, right: 12.0, top: 5.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const InkWell(
+                        child: Icon(
+                          Icons.arrow_forward,
+                          color: Colors.transparent,
+                          size: 46.0,
                         ),
                       ),
-                    ),
+                      const Center(
+                        child: Text(
+                          "OR",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          print('Continue ' + phoneController.text);
+                        },
+                        child: const Icon(
+                          Icons.arrow_forward,
+                          color: Colors.black,
+                          size: 46.0,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Center(
-                  child: Text(
-                    "OR",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
                 ),
                 Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Card(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10.0),
+                      ),
+                    ),
                     color: Colors.black,
                     elevation: 10,
                     child: InkWell(
@@ -118,7 +145,7 @@ class _LoginState extends State<Login> {
                         tryMyApplication(context);
                       },
                       child: const Padding(
-                        padding: EdgeInsets.all(20.0),
+                        padding: EdgeInsets.all(15.0),
                         child: Center(
                           child: Text(
                             "TRY OUR APP",
@@ -137,15 +164,12 @@ class _LoginState extends State<Login> {
     );
   }
 
+  void sendToHome(BuildContext context) {
+    mUtils.showMessage(context, "Welcome");
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
+  }
+
   void tryMyApplication(BuildContext context) {
-    print('Try my app');
-    FirebaseAuth.instance
-        .signInAnonymously()
-        .whenComplete(() => {
-              mUtils.showMessage(context, "Welcome"),
-              Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => Home()))
-            })
-        .onError((error, stackTrace) => mUtils.mToast('Error Login In'));
+    FirebaseAuth.instance.signInAnonymously().whenComplete(() => {sendToHome(context)}).onError((error, stackTrace) => mUtils.mToast(mUtils.errorMessage));
   }
 }
