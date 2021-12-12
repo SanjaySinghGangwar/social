@@ -15,6 +15,9 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   TextEditingController phoneController = TextEditingController();
+  TextEditingController otpController = TextEditingController();
+  FirebaseAuth auth = FirebaseAuth.instance;
+  var countryCode = "";
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +39,14 @@ class _LoginState extends State<Login> {
                 const Center(
                   child: Text(
                     "GET STARTED",
-                    style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
+                    style: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
                   ),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
                 const SizedBox(
-                  height: 200,
+                  height: 150,
                   width: 150,
                   child: Image(
                     image: AssetImage('assets/images/phone.png'),
@@ -53,7 +56,7 @@ class _LoginState extends State<Login> {
                   height: 20,
                 ),
                 Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Card(
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(
@@ -62,18 +65,19 @@ class _LoginState extends State<Login> {
                     ),
                     elevation: 10,
                     child: CountryCodePicker(
-                      onChanged: print,
+                      onChanged: (print) => {countryCode = print.dialCode!},
                       // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
                       initialSelection: 'IN',
                       favorite: const ['+91', 'IN'],
                       // countryFilter: const ['IN', 'FR','US'],
                       showFlagDialog: true,
                       comparator: (a, b) => b.name!.compareTo(a.name!),
+                      onInit: (code) => countryCode = code!.dialCode!,
                     ),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                  padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                   child: Card(
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(
@@ -119,7 +123,7 @@ class _LoginState extends State<Login> {
                       ),
                       InkWell(
                         onTap: () {
-                          print('Continue ' + phoneController.text);
+                          authPhoneNumber(countryCode + phoneController.text);
                         },
                         child: const Icon(
                           Icons.arrow_forward,
@@ -170,6 +174,28 @@ class _LoginState extends State<Login> {
   }
 
   void tryMyApplication(BuildContext context) {
-    FirebaseAuth.instance.signInAnonymously().whenComplete(() => {sendToHome(context)}).onError((error, stackTrace) => mUtils.mToast(mUtils.errorMessage));
+    auth.signInAnonymously().whenComplete(() => {sendToHome(context)}).onError((error, stackTrace) => mUtils.mToast(mUtils.errorMessage));
+  }
+
+  Future<void> authPhoneNumber(String number) async {
+    await auth.verifyPhoneNumber(
+      phoneNumber: number,
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        await auth.signInWithCredential(credential).whenComplete(() => {sendToHome(context)});
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        print(e);
+        mUtils.showMessage(context, e.message.toString());
+      },
+      codeSent: (String verificationId, int? resendToken) async {
+        //show otp ui and as for otp
+        mUtils.showMessage(context, "Otp sent !!");
+        print("Otp Send !!");
+        String smsCode = otpController.text;
+        PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
+        //await auth.signInWithCredential(credential).whenComplete(() => {sendToHome(context)});
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
   }
 }
